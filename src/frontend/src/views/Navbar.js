@@ -7,6 +7,14 @@ import { isLoggedIn, logout, renderGamesPage, renderProfilePage } from '../utili
 
 function Navbar(props) {
 
+    const isLoggedIn = () => {
+        if (localStorage.getItem('accessToken') === '') {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     const history = props.history
         if (isLoggedIn()) {
             return (

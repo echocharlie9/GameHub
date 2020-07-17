@@ -43,6 +43,7 @@ can guess the word faster)
 - add testing to front end
 - add more games!
 - set up front end development/building with docker
+- add docs folder with JSDoc for frontend and Sphinx for backend
 
 ### Hangman API Relative Endpoints
 - 'hangman/'
