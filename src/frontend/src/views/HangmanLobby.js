@@ -4,10 +4,11 @@ import {List,Button, Select} from 'antd'
 import { Error } from './Login'
 
 import { getUnfinishedHangmanGames, getFinishedHangmanGames,
-        getUsersHangmanPoints, renderHangmanGamePage,
-        createHangmanGame, outcomeOfHangmanGame,
-        displayGameID, displayHangmanLobbyDescription,
-        displayCorrectWord, deleteHangmanGame } from '../utility'
+        getUsersHangmanPoints, createHangmanGame,
+        deleteHangmanGame } from '../endpointUtils'
+import { renderHangmanGamePage } from '../renderPageUtils'
+import { displayCorrectWord, displayGameID,
+        displayHangmanLobbyDescription, outcomeOfHangmanGame } from '../displayUtils'
 
 
 const { Option } = Select;

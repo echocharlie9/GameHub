@@ -10,8 +10,15 @@ import Landing from './views/Landing'
 import Games from './views/Games'
 
 import { landingRoute, gamesRoute, hangmanLobbyRoute,
-  hangmanGameRoute, profileRoute } from './constants'
+  hangmanGameRoute, profileRoute } from './renderPageUtils'
 
+/**
+ * The base component that attaches to index.html.
+ * Consists of a navbar and main content that switches
+ * between multiple different routes.
+ * @param {props} props
+ * @return {component} 
+ */
 function App(props) {
 
   return (

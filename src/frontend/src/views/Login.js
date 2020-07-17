@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import { Form, Input, Button, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import { login } from '../utility'
+import { login } from '../endpointUtils'
 
 export const Error = (props) => {
   return (

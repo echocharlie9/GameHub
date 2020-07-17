@@ -3,11 +3,11 @@ import React, {useState} from 'react'
 import { Select, Row, Col, Result, Button } from 'antd';
 import { Error } from './Login'
 
-import { guessHangmanLetter, renderHangmanLobbyPage,
-          displayOutcomeOfHangmanGame, displayOutcomeMessage,
-          availableLetters, displayWordAttempt,
-          displayGuessedLetters, 
-          renderGamesPage} from '../utility'
+import { guessHangmanLetter } from '../endpointUtils'
+import { renderHangmanLobbyPage, renderGamesPage } from '../renderPageUtils'
+import { displayOutcomeOfHangmanGame, displayOutcomeMessage,
+        availableLetters, displayWordAttempt,
+        displayGuessedLetters, } from '../displayUtils'
 
 const { Option } = Select;
 

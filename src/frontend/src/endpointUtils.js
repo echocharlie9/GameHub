@@ -44,7 +44,7 @@ export const register = (username, password) => {
         username: username,
         password: password
     }
-    return new Promise((resolve, reject) => {axios.post(registerEndpoint, credentials)
+    return new Promise((resolve, reject) => {axios.post(registerEndpoint, credentials).then(res => resolve(''))
         .catch(error => {
             if (error.response.status === 400) {
                 return resolve('User already exists.')
@@ -74,6 +74,7 @@ export const login = (history, username, password) => {
         localStorage.setItem('isLoggedIn', true)
         renderGamesPage(history)
         message.success('Successfully logged in!')
+        return resolve('')
     }).catch(error => {
         if (error.response.status === 401) {
             return resolve('User does not exist.')

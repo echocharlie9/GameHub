@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
+import { withRouter } from 'react-router-dom';
 
 import {Form, Input, Button} from 'antd'
 import { UserOutlined, LockOutlined} from '@ant-design/icons';
 
-import { register, login } from '../utility'
+import { register, login } from '../endpointUtils'
 
 import {Error} from './Login'
 
@@ -14,10 +15,14 @@ function Register(props) {
     }
     const [ errMessage, setErrMessage ] = useState('')
     const onRegister = (values) => {
+        setErrMessage('loading')
         const {username, password} = values
         register(username, password).then((err) => {
             setErrMessage(err)
-            login(props.history, username, password)
+            if (err === '') {
+                setErrMessage('logging you in now')
+                login(props.history, username, password)
+            }
         }).catch(error => console.log(error))
     }
     
@@ -87,4 +92,4 @@ function Register(props) {
     )
 }
 
-export default Register
+export default withRouter(Register)

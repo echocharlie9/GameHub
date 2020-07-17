@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import {Button, List} from 'antd'
 
-import { getUserInformation } from '../utility'
+import { getUserInformation } from '../endpointUtils'
 
 const data = [{title: 'Hangman', link: '/hangmanLobby'}]
 

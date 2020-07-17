@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 
 import {Row, Col} from 'antd'
 
-import { isLoggedIn, logout, renderGamesPage, renderProfilePage } from '../utility'
+import { renderGamesPage, renderProfilePage,
+        logout } from '../renderPageUtils'
 
 function Navbar(props) {
 
