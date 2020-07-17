@@ -7,7 +7,7 @@ up:
 test:
 	docker-compose run \
   -e DJANGO_SETTINGS_MODULE=settings \
-  --no-deps --rm web py.test -s
+  --no-deps --rm web py.test apps -s
 
 makemigrations:
 	docker-compose run \
