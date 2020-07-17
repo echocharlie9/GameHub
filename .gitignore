@@ -7,6 +7,8 @@
 ./src/static/*
 .pytest_cache/
 build/
+/build
+/.pytest_cache
 /__pycache__
 src/mydjango/__pycache__/settings.cpython-35.pyc
 */static/
