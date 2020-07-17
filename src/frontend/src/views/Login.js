@@ -1,32 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { withRouter } from 'react-router-dom';
 
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import axios from 'axios'
+
+import { login } from '../utility'
+
+export const Error = (props) => {
+  return (
+  <p>{props.errMessage}</p>
+  )
+}
 
 function Login(props) {
-   const accessToken = localStorage.getItem('accessToken')
 
-  const config = {
-    headers: {
-      'Authorization': `JWT ${accessToken}`,
-    }
-  }
+  const renderRegisterComponent = () => {
+    props.switch()
+}
+    const [ errMessage, setErrMessage ] = useState('')
 
     const onLogin = (values) => {
-        axios.post('http://127.0.0.1:8000/auth/jwt/create/', {
-            username: values.username,
-            password: values.password
-          }).then(
-            response => {
-                localStorage.setItem('accessToken', response.data.access)
-                localStorage.setItem('isLoggedIn', true)
-                console.log(response)
-                message.success('Successfully logged in!')
-                props.login()
-                
-            }).catch(error => console.log(error))
+      login(props.history, values.username, values.password).then(
+        error => setErrMessage(error)
+      )
       }
 
     return (
@@ -70,21 +67,18 @@ function Login(props) {
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
-
-        {/* <a className="login-form-forgot" href="">
-          Forgot password
-        </a> */}
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        Or <a onClick={props.switch}>register now!</a>
+        Or <a onClick={() => renderRegisterComponent(props.history)}>register now!</a>
       </Form.Item>
     </Form>
+    <Error errMessage={errMessage}></Error>
     </div>
     )
 }
 
-export default Login
+export default withRouter(Login)

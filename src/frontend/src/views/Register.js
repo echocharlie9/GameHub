@@ -1,32 +1,24 @@
-import React from 'react'
-import axios from 'axios'
+import React, {useState} from 'react'
 
-import {Form, Input, Button, message} from 'antd'
+import {Form, Input, Button} from 'antd'
 import { UserOutlined, LockOutlined} from '@ant-design/icons';
+
+import { register, login } from '../utility'
+
+import {Error} from './Login'
 
 function Register(props) {
 
+    const renderLoginComponent = () => {
+        props.switch()
+    }
+    const [ errMessage, setErrMessage ] = useState('')
     const onRegister = (values) => {
-        axios.post('http://127.0.0.1:8000/auth/users/', {
-            username: values.username,
-            password: values.password,
-          }).then(
-            response => {
-                console.log(response)
-                // message.success('Successfully registered!')
-                // props.history.push('/login')
-            }).then(() => {
-                axios.post('http://127.0.0.1:8000/auth/jwt/create/', {
-            username: values.username,
-            password: values.password
-            }).then(
-            response => {
-                localStorage.setItem('accessToken', response.data.access)
-                localStorage.setItem('isLoggedIn', true)
-                console.log(response)
-                props.login()
-            })
-            }).catch(error => console.log(error))
+        const {username, password} = values
+        register(username, password).then((err) => {
+            setErrMessage(err)
+            login(props.history, username, password)
+        }).catch(error => console.log(error))
     }
     
     return (
@@ -88,8 +80,9 @@ function Register(props) {
                 Register
                 </Button>
                 </Form.Item>
-                 Already have an account?<a onClick={props.switch}> Login</a>
+                 Already have an account?<a onClick={renderLoginComponent}> Login</a>
             </Form>
+            <Error errMessage={errMessage}></Error>
         </div>
     )
 }

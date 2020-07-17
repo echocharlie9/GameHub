@@ -1,28 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
 
 import {Button, List} from 'antd'
+
+import { getUserInformation } from '../utility'
 
 const data = [{title: 'Hangman', link: '/hangmanLobby'}]
 
 function Games(props) {
-
-    const accessToken = localStorage.getItem('accessToken')
- 
-    const config = {
-        headers: {
-            'Authorization': `JWT ${accessToken}`
-        }
-    }
-    const [username, setUsername] = useState()
+    const [username, setUsername] = useState('')
     const [games, setGames] = useState(data)
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/auth/users/me/', config).then(response => {
-            console.log(response.data)
-            setUsername(response.data.username)
-            // setPastGames(response.data.filter(val => val.finished == 'yes'))
-        }).catch(error => console.log(error))
+        getUserInformation().then(data => setUsername(data.username))
     },[])
 
     return (

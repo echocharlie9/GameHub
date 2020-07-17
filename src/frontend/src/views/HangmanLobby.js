@@ -1,105 +1,44 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+
 import {List,Button, Select} from 'antd'
+import { Error } from './Login'
+
+import { getUnfinishedHangmanGames, getFinishedHangmanGames,
+        getUsersHangmanPoints, renderHangmanGamePage,
+        createHangmanGame, outcomeOfHangmanGame,
+        displayGameID, displayHangmanLobbyDescription,
+        displayCorrectWord, deleteHangmanGame } from '../utility'
+
+
 const { Option } = Select;
+
 function HangmanLobby(props) {
-    const accessToken = localStorage.getItem('accessToken')
- 
-    const config = {
-        headers: {
-            'Authorization': `JWT ${accessToken}`
-        }
-    }
     const [hangmanPoints, setPoints] = useState(0)
     const [currentGames, setCurrentGames] = useState()
     const [pastGames, setPastGames] = useState()
     const [difficultyLevel, setDifficultyLevel] = useState()
+    const [ errMessage, setErrMessage ] = useState('')
     function onChange(value) {
         setDifficultyLevel(value)
       }
       
-      function onBlur() {
-        console.log('blur');
-      }
-      
-      function onFocus() {
-        console.log('focus');
-      }
-      
-      function onSearch(val) {
-        console.log('search:', val);
-      }
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/hangman/', config).then(response => {
-            console.log(response.data)
-            setCurrentGames(response.data)
-            // setPastGames(response.data.filter(val => val.finished == 'yes'))
-        }).catch(error => console.log(error))
-        axios.get('http://127.0.0.1:8000/hangman/getFinished/', config).then(response => {
-            console.log(response.data)
-        setPastGames(response.data)
-        }).catch(error => console.log(error))
-        axios.get('http://127.0.0.1:8000/hangman/getPoints/', config).then(response => {
-                console.log(response.data)
-                setPoints(response.data)
-            }).catch(error => console.log(error))
+        getUnfinishedHangmanGames().then(data => setCurrentGames(data))
+        getFinishedHangmanGames().then(data => setPastGames(data))
+        getUsersHangmanPoints().then(data => setPoints(data))
     },[])
 
-   
-    const join = (item) => {
-        props.history.push({
-            pathname: '/game',
-            state: {
-                data: item
-            }
-        })
+    const deleteGame = (game_id) => {
+        deleteHangmanGame(game_id)
+        setCurrentGames(currentGames.filter((val) => val.game_id !== game_id))
     }
 
-    const startNewGame = () => {
-        axios.post('http://127.0.0.1:8000/hangman/', {
-            difficulty_level: difficultyLevel
-        }, config).then(response => {
-            console.log(response.data)
-            props.history.push({
-                pathname: '/game',
-                state: {
-                    data: response.data
-                }
-            })
-        }).catch(error => console.log(error))
-    }
-
-    const outcomeOf = (item) => {
-        if (item.word_attempt.includes('')) {
-            return 'LOST'
+    const createGame = () => {
+        if ((difficultyLevel == null) || (difficultyLevel == '')) {
+            setErrMessage('Please select a difficulty level')
         } else {
-            return 'WON'
+            createHangmanGame(props.history, difficultyLevel)
         }
-    }
-
-    const formatGame = (game_id) => {
-        return "Game " + game_id
-    }
-
-    const displayAttempt = (word_attempt) => {
-        const pre = word_attempt.map(val => {
-          if (val === '')
-            return '_'
-          else
-            return val
-        })
-        return pre.join('   ')
-      }
-
-    const formatDescription = (item) => {
-        const lives = 6 - item.wrong_moves
-        const progress = displayAttempt(item.word_attempt)
-        return 'Lives Left: ' + lives + ', Progress: ' + progress
-    }
-
-    const formatEndDescription = (item) => {
-        const word = item.word
-        return 'word: ' + word
     }
 
     return (
@@ -121,12 +60,13 @@ function HangmanLobby(props) {
                 renderItem = {(item) => (
                     <List.Item
                     actions={[
-                        <Button onClick={() => join(item)}>Continue Playing</Button>, 
+                        <Button onClick={() => renderHangmanGamePage(props.history, item)}>Continue Playing</Button>,
+                        <Button onClick={() => deleteGame(item.game_id)}>Delete Game</Button> 
                 ]}
                     >
                         <List.Item.Meta
-                            title = {<p>{formatGame(item.game_id)}</p>}
-                            description = {<p>{formatDescription(item)}</p>}
+                            title = {<p>{displayGameID(item.game_id)}</p>}
+                            description = {<p>{displayHangmanLobbyDescription(item)}</p>}
                         />
                     </List.Item>
                 )}
@@ -140,9 +80,6 @@ function HangmanLobby(props) {
     placeholder="Choose Difficulty Level"
     optionFilterProp="children"
     onChange={onChange}
-    onFocus={onFocus}
-    onBlur={onBlur}
-    onSearch={onSearch}
     filterOption={(input, option) =>
       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
@@ -151,8 +88,9 @@ function HangmanLobby(props) {
         <Option value='2'>2</Option>
         <Option value='3'>3</Option>
   </Select>
-  <Button onClick={startNewGame}>Start New Singleplayer Game</Button>
+  <Button onClick={createGame}>Start New Singleplayer Game</Button>
   <p>Multiplayer Functionality Coming Soon!</p>
+  <Error errMessage={errMessage}></Error>
   </div>
             <h2 style= {{textAlign: 'center'}}>Past Games</h2>
             <List
@@ -168,10 +106,10 @@ function HangmanLobby(props) {
                     <List.Item
                     >
                         <List.Item.Meta
-                            title = {<p>{formatGame(item.game_id)}</p>}
-                            description = {<p>{formatEndDescription(item)}</p>}
+                            title = {<p>{displayGameID(item.game_id)}</p>}
+                            description = {<p>{displayCorrectWord(item.word)}</p>}
                         />
-                        <p>{outcomeOf(item)}</p>
+                        <p>{outcomeOfHangmanGame(item.word_attempt)}</p>
                     </List.Item>
                 )}
             >
