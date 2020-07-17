@@ -15,7 +15,7 @@
 - make build (builds the docker image)
 
 ### Running the Project
-- make up
+- make up (navigate to localhost:8000)
 
 ### Testing the Project
 - make test
@@ -27,12 +27,17 @@
 - cd ../../
 - make up
 
-### Future Features
+Tips:
+Run the following command before 'make up' to create a superuser to use
+django's admin: docker-compose run --no-deps --rm web python3 manage.py createsuperuser
+
+### Future Features/Fixes
 - add multiplayer real time hangman competitions against the computer (who
 can guess the word faster)
 - add asynchronous multiplayer: one user makes the word, the other user guesses the word
-- fix up in-game UI for hangman (format previously gussed letters better and show actual hangman)
+- fix up in-game UI for hangman (format previously guessed letters better and show actual hangman)
 - fix landing page UI (add more images and descriptions to make it look nice)
 - add profile functionality (change password, delete account, etc)
 - add game model to database to represent generic games (not just hangman)
+- add testing to front end
 - add more games!
