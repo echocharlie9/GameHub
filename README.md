@@ -13,6 +13,7 @@
 - npm run build
 - cd ../../
 - make build (builds the docker image)
+Tips: If an edit is made to the dockerfile/docker-compose, rerun make build
 
 ### Running the Project
 - make up (navigate to localhost:8000)
@@ -23,9 +24,9 @@
 ### Developing the Project
 - cd GameHub/src/frontend
 - npm i
-- npm run start
+- npm run start (navigate to localhost:3000)
 - cd ../../
-- make up
+- make up (navigate to localhost:8000)
 
 Tips:
 Run the following command before 'make up' to create a superuser to use
@@ -41,3 +42,25 @@ can guess the word faster)
 - add game model to database to represent generic games (not just hangman)
 - add testing to front end
 - add more games!
+- set up front end development/building with docker
+
+### Hangman API Relative Endpoints
+- 'hangman/'
+- 'hangman/${id}/'
+- 'hangman/${id}/guessLetter/'
+- 'hangman/getFinished/'
+- 'hangman/getPoints/'
+- 'admin/'
+- 'auth/jwt/create/'
+- 'auth/jwt/refresh/'
+- 'auth/jwt/verify/'
+- 'auth/users/'
+- 'auth/users/activation/'
+- 'auth/users/resend_activation/'
+- 'auth/users/me/'
+- 'auth/users/set_username/'
+- 'auth/users/reset_username/'
+- 'auth/users/reset_username_confirm/'
+- 'auth/users/set_password/'
+- 'auth/users/reset_password/'
+- 'auth/users/reset_password_confirm/'
