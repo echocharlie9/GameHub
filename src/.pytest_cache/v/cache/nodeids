@@ -1,0 +1,10 @@
+[
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testCreateGame",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testDeleteGame",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testGuessWordCorrect",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testGuessWordFalse",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testListGame",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testRetrieveGame",
+  "apps/hangman/tests.py::HangmanGameViewSetTest::testUpdateGame",
+  "apps/hangman/tests.py::GetPointsTest::testBasic"
+]
