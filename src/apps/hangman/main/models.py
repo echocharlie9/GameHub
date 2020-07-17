@@ -5,28 +5,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth import get_user_model as user_model
 User = user_model()
 
-# class SeparatedValuesField(models.TextField):
-#     __metaclass__ = models.SubfieldBase
-
-#     def __init__(self, *args, **kwargs):
-#         self.token = kwargs.pop('token', ',')
-#         super(SeparatedValuesField, self).__init__(*args, **kwargs)
-
-#     def to_python(self, value):
-#         if not value: return
-#         if isinstance(value, list):
-#             return value
-#         return value.split(self.token)
-
-#     def get_db_prep_value(self, value):
-#         if not value: return
-#         assert(isinstance(value, list) or isinstance(value, tuple))
-#         return self.token.join([unicode(s) for s in value])
-
-#     def value_to_string(self, obj):
-#         value = self._get_val_from_obj(obj)
-#         return self.get_db_prep_value(value)
-
 longest_english_word_length = 45
 guessed_letters_length = 200
 word_attempt_legnth = 200
@@ -61,9 +39,6 @@ class ListField(models.TextField):
                 self.token = token
                 super().__init__(*args)
 
-            # def __str__(self):
-            #     return self.token.join(self)
-
         if isinstance(value, list):
             return value
         if value is None:
@@ -85,6 +60,20 @@ class ListField(models.TextField):
         return self.get_prep_value(value)
 
 class HangmanGame(models.Model):
+    """
+    A class that represents a hangman game. It stores the player
+    of the hangman game (user), the difficulty level of the game
+    (difficulty_level), the date and time it was created (created),
+    whether the game has been finished or is currently ongoing (finished),
+    an id (game_id), the word the player is trying to guess (word),
+    the letters that the player has guessed (guessed_letters), the
+    amount of wrong moves the player has made (wrong_moves), and his
+    attempt of the word (word_attempt).
+    Word_attempt is represented as a list of strings. It initially
+    is a list of empty strings as long as the word (simulating an
+    unknown value). As the player guesses correct letters, the
+    corresponding indexes are filled in with the correct letter.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     difficulty_level = models.IntegerField(
         default=1,
@@ -98,7 +87,6 @@ class HangmanGame(models.Model):
     game_id = models.AutoField(primary_key=True)
     word = models.CharField(max_length=longest_english_word_length)
     guessed_letters = models.CharField(max_length=guessed_letters_length, default='')
-    # word_attempt = models.CharField(max_length=word_attempt_legnth)
     word_attempt = ListField()
     wrong_moves = models.IntegerField(
         default=0,
@@ -108,18 +96,11 @@ class HangmanGame(models.Model):
         ]
      )
 
-    def set_guessed_letters(self, val):
-         self.guessed_letters = json.dumps(val)
-    def get_guessed_letters(self, val):
-         return json.loads(self.guessed_letters)
+    # def set_guessed_letters(self, val):
+    #      self.guessed_letters = json.dumps(val)
+    # def get_guessed_letters(self, val):
+    #      return json.loads(self.guessed_letters)
 
-    # def set_word_attempt(self, val):
-    #      self.word_attempt = json.dumps(val)
-    # def get_word_attempt(self, val):
-    #     jsonDec = json.decoder.JSONDecoder()
-    #     myPythonList = jsonDec.decode(self.word_attempt)
-    #     return myPythonList
-    
     def __str__(self):
         game_id = 'game_id = ' + str(self.game_id)
         word_attempt = ', word_attempt = ' + str(self.word_attempt)

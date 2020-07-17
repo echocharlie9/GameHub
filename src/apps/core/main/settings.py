@@ -31,6 +31,9 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ") if os.environ.get('AL
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "../frontend/build/static"),
+]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = './static/'
 
@@ -71,7 +74,7 @@ ROOT_URLCONF = 'apps.core.api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join((BASE_DIR), '../frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
